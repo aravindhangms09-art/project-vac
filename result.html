@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Proposal Results</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f5fa;
+            color: #263238;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            color: #173f75;
+            text-align: center;
+        }
+
+        h2 {
+            color: #2156a5;
+            border-bottom: 1px solid #dce3ee;
+            padding-bottom: 8px;
+            margin-top: 28px;
+        }
+
+        .topic {
+            text-align: center;
+            color: #526579;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            line-height: 1.7;
+            overflow-wrap: anywhere;
+        }
+
+        li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        button, .back-button {
+            border: none;
+            border-radius: 6px;
+            padding: 13px 18px;
+            font-size: 15px;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .download-button {
+            background: #167345;
+            color: white;
+        }
+
+        .back-button {
+            background: #2156a5;
+            color: white;
+        }
+
+        button:hover, .back-button:hover {
+            opacity: 0.88;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 18px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h1>AI Research Proposal</h1>
+
+    <p class="topic">
+        <strong>Research Topic:</strong>
+        {{ topic }}
+    </p>
+
+    <h2>Research Title</h2>
+    <div class="section">{{ proposal.title }}</div>
+
+    <h2>Research Summary</h2>
+    <div class="section">{{ proposal.summary }}</div>
+
+    <h2>Problem Statement</h2>
+    <div class="section">{{ proposal.problem }}</div>
+
+    <h2>Research Objectives</h2>
+    <ul>
+        {% for objective in proposal.objectives %}
+            <li>{{ objective }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Research Methodology</h2>
+    <div class="section">{{ proposal.methodology }}</div>
+
+    <h2>Expected Outcomes</h2>
+    <div class="section">{{ proposal.expected_outcomes }}</div>
+
+    <h2>Suggested Research Ideas</h2>
+    <ol>
+        {% for idea in proposal.research_ideas %}
+            <li>{{ idea }}</li>
+        {% endfor %}
+    </ol>
+
+    <div class="actions">
+
+        <form action="{{ url_for('download_proposal') }}" method="POST">
+
+            <input type="hidden" name="topic" value="{{ topic }}">
+            <input type="hidden" name="field" value="{{ field }}">
+            <input type="hidden" name="level" value="{{ level }}">
+            <input type="hidden" name="description" value="{{ description }}">
+
+            <input
+                type="hidden"
+                name="proposal_json"
+                value="{{ proposal | tojson | forceescape }}"
+            >
+
+            <button type="submit" class="download-button">
+                Download Research Proposal (Word)
+            </button>
+
+        </form>
+
+        <a href="{{ url_for('home') }}" class="back-button">
+            Generate Another Proposal
+        </a>
+
+    </div>
+
+</div>
+</body>
+</html>
